@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,14 @@ public class CategoryResource {
         Map<String,Boolean>map=new HashMap<>();
         map.put("success",true);
         return  new ResponseEntity<>(map,HttpStatus.OK);
+    }
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<Map<String,Boolean>> deleteCategory(HttpServletRequest request,@PathVariable("categoryId")Integer categoryId){
+        int userId=(Integer) request.getAttribute("userId");
+        categoryService.removeCategoryWithAllTransactions(userId,categoryId);
+        Map<String,Boolean> map=new HashMap<>();
+        map.put("Success",true);
+        return new ResponseEntity<>(map,HttpStatus.OK);
     }
 
 }
